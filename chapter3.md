@@ -387,8 +387,8 @@ $$\Pr[\mathcal{A}(1^n, \text{Enc}_k(m)) = m_i] = 1/2 \cdot \Pr_{m_0 \leftarrow \
 
 **攻击者 $\mathcal{A}'$：**
 
-1.  均匀选择 $m_0 \in \mathcal{I}_0$ 和 $m_1 \in \mathcal{I}_1$。输出 $m_0, m_1$。
-2.  在观察到密文 $c$ 后，调用 $\mathcal{A}(1^n, c)$。如果 $\mathcal{A}$ 输出 $0$，则输出 $b' = 0$；否则，输出 $b' = 1$。
+1. 均匀选择 $m_0 \in \mathcal{I}_0$ 和 $m_1 \in \mathcal{I}_1$。输出 $m_0, m_1$。
+2. 在观察到密文 $c$ 后，调用 $\mathcal{A}(1^n, c)$。如果 $\mathcal{A}$ 输出 $0$，则输出 $b' = 0$；否则，输出 $b' = 1$。
 
 $\mathcal{A}'$ 运行时间为多项式时间，因为 $\mathcal{A}$ 是多项式时间算法。
 
@@ -401,7 +401,7 @@ $$\Pr[\mathcal{A}(1^n, \text{Enc}_k(m)) = m_i] \le 1/2 + \text{negl}(n),$$
 接下来我们大致主张，不可区分性意味着在给定密文的情况下，无论消息的分布如何，任何 ppt 攻击者都无法获取关于明文的任何函数信息。这旨在捕捉这样一个观点，即所得密文不会泄露关于底层明文的任何信息。然而，这个要求形式化起来并不简单。原因在于，即使对于上面考虑的情况，如果 $m$ 是从所有第 $i$ 个比特为 $0$ 的字符串集合中均匀选择的（而不是从 $\{0, 1\}^\ell$ 中均匀选择），那么计算 $m$ 的第 $i$ 个比特也是很容易的。因此，我们真正想说的是，如果存在任何攻击者在给定 $\text{Enc}_k(m)$ 的情况下以某种概率正确计算了 $f(m)$，那么也存在一个攻击者可以在完全不给定密文的情况下（仅知道 $m$ 的分布）以相同的概率正确计算 $f(m)$。在下文中，我们将重点关注 $m$ 从某个集合 $\mathcal{S} \subseteq \{0, 1\}^\ell$ 中均匀选择的情况。
 
 **定理 3.11** 设 $(\text{Enc}, \text{Dec})$ 是一个用于长度为 $\ell$ 的消息的固定长度私钥加密方案，并且在窃听者存在的情况下具有不可区分的加密。那么对于任何 ppt 算法 $\mathcal{A}$，都存在一个 ppt 算法 $\mathcal{A}'$，使得对于任何集合 $\mathcal{S} \subseteq \{0, 1\}^\ell$ 和任何函数 $f: \{0, 1\}^\ell \to \{0, 1\}$，都存在一个可忽略函数 $\text{negl}$，使得
-$$\left|\Pr[\mathcal{A}(1^n, \text{Enc}_k(m)) = f(m)] - \Pr[\mathcal{A}'(1^n, |m|, h(m)) = f(m)]\right| \le \text{negl}(n),$$
+$$\left|\Pr[\mathcal{A}(1^n, \text{Enc}_k(m)) = f(m)] - \Pr[\mathcal{A}'(1^n) = f(m)]\right| \le \text{negl}(n),$$
 其中第一个概率是针对 $k \in \{0, 1\}^n$ 的均匀选择、 $m \in \mathcal{S}$ 的均匀选择、$\mathcal{A}$ 的随机性以及 $\text{Enc}$ 的随机性来计算的，而第二个概率是针对 $m \in \mathcal{S}$ 的均匀选择和 $\mathcal{A}'$ 的随机性来计算的。
 
 **证明概要** $(\text{Enc}, \text{Dec})$ 是 $\text{EAV}$-安全的意味着，对于任何 $\mathcal{S} \subseteq \{0, 1\}^\ell$，没有 ppt 攻击者能够区分 $\text{Enc}_k(m)$（对于均匀的 $m \in \mathcal{S}$）和 $\text{Enc}_k(1^\ell)$。现在考虑 $\mathcal{A}$ 在给定 $\text{Enc}_k(m)$ 的情况下成功计算 $f(m)$ 的概率。我们主张 $\mathcal{A}$ 应该在给定 $\text{Enc}_k(1^\ell)$ 的情况下以几乎相同的概率成功计算 $f(m)$；否则，$\mathcal{A}$ 就可以被用来区分 $\text{Enc}_k(m)$ 和 $\text{Enc}_k(1^\ell)$。区分者很容易构造：选择均匀的 $m \in \mathcal{S}$，并输出 $m_0 = m, m_1 = 1^\ell$。当给定密文 $c$ 是 $m_0$ 或 $m_1$ 的加密时，调用 $\mathcal{A}(1^n, c)$，当且仅当 $\mathcal{A}$ 输出 $f(m)$ 时输出 $0$。如果 $\mathcal{A}$ 在给定 $m$ 的加密时输出 $f(m)$ 的概率与在给定 $1^\ell$ 的加密时输出 $f(m)$ 的概率存在显著差异，那么所描述的区分者将违反定义 3.9。
